@@ -1,8 +1,0 @@
-[build]
-  command = "pnpm --filter @workspace/staff-tracker run build"
-  publish = "artifacts/staff-tracker/dist/public"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
