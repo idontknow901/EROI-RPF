@@ -73,7 +73,7 @@ function App() {
       const staffData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      }));
+      })).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
       setStaff(staffData);
       setLoading(false);
     }, (error) => {
@@ -138,7 +138,11 @@ function App() {
 
   const addStaffMember = async (newStaff) => {
     try {
-      await addDoc(collection(db, 'staff'), newStaff);
+      const staffWithMeta = {
+        ...newStaff,
+        createdAt: Date.now()
+      };
+      await addDoc(collection(db, 'staff'), staffWithMeta);
       setActiveTab('staff-list');
     } catch (error) {
       console.error("Error adding staff:", error);
