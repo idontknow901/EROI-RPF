@@ -197,9 +197,11 @@ function App() {
     strikeCount += s.warnings?.activity || 0;
   });
 
-  // Top performers
-  const sortedByVoice = [...staff].sort((a, b) => parseInt(b.voice || 0) - parseInt(a.voice || 0)).slice(0, 3);
-  const sortedByEvents = [...staff].sort((a, b) => parseInt(b.events || 0) - parseInt(a.events || 0)).slice(0, 3);
+  // Top performers (Filter out zeros, sort descending)
+  const sortedByVoice = [...staff].filter(s => parseInt(s.voice || 0) > 0).sort((a, b) => parseInt(b.voice || 0) - parseInt(a.voice || 0));
+  const sortedByEvents = [...staff].filter(s => parseInt(s.events || 0) > 0).sort((a, b) => parseInt(b.events || 0) - parseInt(a.events || 0));
+  const sortedByMessages = [...staff].filter(s => parseInt(s.messages || 0) > 0).sort((a, b) => parseInt(b.messages || 0) - parseInt(a.messages || 0));
+  const sortedByMini = [...staff].filter(s => parseInt(s.mini || 0) > 0).sort((a, b) => parseInt(b.mini || 0) - parseInt(a.mini || 0));
 
   return (
     <div className="app-layout">
@@ -353,42 +355,92 @@ function App() {
               <div className="performer-header">
                 <ActivityIcon stroke="var(--primary)" /> Top Performers: Voice Hours
               </div>
-              {sortedByVoice.map((s, idx) => (
-                <div key={s.id} className="performer-row">
-                  <div className="performer-left">
-                    <div className="rank-badge">#{idx + 1}</div>
-                    <div>
-                      <div className="performer-name">{s.name}</div>
-                      <div className="performer-role">{s.rank} • {s.division}</div>
+              <div className="performer-list-scroll">
+                {sortedByVoice.length > 0 ? sortedByVoice.map((s, idx) => (
+                  <div key={s.id} className="performer-row">
+                    <div className="performer-left">
+                      <div className="rank-badge">#{idx + 1}</div>
+                      <div>
+                        <div className="performer-name">{s.name}</div>
+                        <div className="performer-role">{s.rank} • {Array.isArray(s.division) ? s.division.join(', ') : s.division}</div>
+                      </div>
+                    </div>
+                    <div className="performer-right">
+                      <div className="performer-score">{s.voice}h</div>
+                      <div className="performer-period">Weekly</div>
                     </div>
                   </div>
-                  <div className="performer-right">
-                    <div className="performer-score">{s.voice}h</div>
-                    <div className="performer-period">Weekly</div>
-                  </div>
-                </div>
-              ))}
+                )) : <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>No records</div>}
+              </div>
             </div>
 
             <div className="performer-card">
               <div className="performer-header">
                 <ActivityIcon stroke="var(--primary)" /> Top Performers: Events
               </div>
-              {sortedByEvents.map((s, idx) => (
-                <div key={s.id} className="performer-row">
-                  <div className="performer-left">
-                    <div className="rank-badge">#{idx + 1}</div>
-                    <div>
-                      <div className="performer-name">{s.name}</div>
-                      <div className="performer-role">{s.rank} • {s.division}</div>
+              <div className="performer-list-scroll">
+                {sortedByEvents.length > 0 ? sortedByEvents.map((s, idx) => (
+                  <div key={s.id} className="performer-row">
+                    <div className="performer-left">
+                      <div className="rank-badge">#{idx + 1}</div>
+                      <div>
+                        <div className="performer-name">{s.name}</div>
+                        <div className="performer-role">{s.rank} • {Array.isArray(s.division) ? s.division.join(', ') : s.division}</div>
+                      </div>
+                    </div>
+                    <div className="performer-right">
+                      <div className="performer-score">{s.events}</div>
+                      <div className="performer-period">Events</div>
                     </div>
                   </div>
-                  <div className="performer-right">
-                    <div className="performer-score">{s.events}</div>
-                    <div className="performer-period">Events + Mini</div>
+                )) : <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>No records</div>}
+              </div>
+            </div>
+
+            <div className="performer-card">
+              <div className="performer-header">
+                <ActivityIcon stroke="var(--primary)" /> Top Performers: Messages
+              </div>
+              <div className="performer-list-scroll">
+                {sortedByMessages.length > 0 ? sortedByMessages.map((s, idx) => (
+                  <div key={s.id} className="performer-row">
+                    <div className="performer-left">
+                      <div className="rank-badge">#{idx + 1}</div>
+                      <div>
+                        <div className="performer-name">{s.name}</div>
+                        <div className="performer-role">{s.rank} • {Array.isArray(s.division) ? s.division.join(', ') : s.division}</div>
+                      </div>
+                    </div>
+                    <div className="performer-right">
+                      <div className="performer-score">{s.messages}</div>
+                      <div className="performer-period">Total</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )) : <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>No records</div>}
+              </div>
+            </div>
+
+            <div className="performer-card">
+              <div className="performer-header">
+                <ActivityIcon stroke="var(--primary)" /> Top Performers: Ingame Mod Hours
+              </div>
+              <div className="performer-list-scroll">
+                {sortedByMini.length > 0 ? sortedByMini.map((s, idx) => (
+                  <div key={s.id} className="performer-row">
+                    <div className="performer-left">
+                      <div className="rank-badge">#{idx + 1}</div>
+                      <div>
+                        <div className="performer-name">{s.name}</div>
+                        <div className="performer-role">{s.rank} • {Array.isArray(s.division) ? s.division.join(', ') : s.division}</div>
+                      </div>
+                    </div>
+                    <div className="performer-right">
+                      <div className="performer-score">{s.mini}h</div>
+                      <div className="performer-period">Total</div>
+                    </div>
+                  </div>
+                )) : <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>No records</div>}
+              </div>
             </div>
           </div>
         </div>
