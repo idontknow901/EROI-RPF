@@ -198,8 +198,8 @@ function App() {
   });
 
   // Top performers
-  const sortedByVoice = [...staff].sort((a, b) => parseInt(b.voice || 0) - parseInt(a.voice || 0)).slice(0, 2);
-  const sortedByEvents = [...staff].sort((a, b) => parseInt(b.events || 0) - parseInt(a.events || 0)).slice(0, 2);
+  const sortedByVoice = [...staff].sort((a, b) => parseInt(b.voice || 0) - parseInt(a.voice || 0)).slice(0, 3);
+  const sortedByEvents = [...staff].sort((a, b) => parseInt(b.events || 0) - parseInt(a.events || 0)).slice(0, 3);
 
   return (
     <div className="app-layout">
