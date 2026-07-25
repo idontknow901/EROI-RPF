@@ -43,7 +43,6 @@ function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('rpf_theme') || 'dark';
   });
-  const [timeframe, setTimeframe] = useState('WEEKLY');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isAdmin, setIsAdmin] = useState(() => {
     return localStorage.getItem('rpf_admin') === 'true';
@@ -267,15 +266,9 @@ function App() {
             </div>
           ) : (
           <div className="dashboard-scroll">
-            <div className="roster-header-area">
-              <div className="page-header" style={{ marginBottom: 0 }}>
-                <h1 className="page-title">Railway Police Force</h1>
-                <p className="page-subtitle">Staff overview & operations summary</p>
-              </div>
-              <div className="roster-toggles">
-                <button className={`toggle-btn ${timeframe === 'WEEKLY' ? 'active' : ''}`} onClick={() => setTimeframe('WEEKLY')}>WEEKLY</button>
-                <button className={`toggle-btn ${timeframe === 'MONTHLY' ? 'active' : ''}`} onClick={() => setTimeframe('MONTHLY')}>MONTHLY</button>
-              </div>
+            <div className="page-header">
+              <h1 className="page-title">Railway Police Force</h1>
+              <p className="page-subtitle">Staff overview & operations summary</p>
             </div>
 
             <div className="kpi-grid">
@@ -364,7 +357,6 @@ function App() {
               </div>
               <div className="performer-list-scroll">
                 {sortedByVoice.length > 0 ? sortedByVoice.map((s, idx) => {
-                  const mult = timeframe === 'MONTHLY' ? 4 : 1;
                   return (
                   <div key={s.id} className="performer-row">
                     <div className="performer-left">
@@ -375,8 +367,8 @@ function App() {
                       </div>
                     </div>
                     <div className="performer-right">
-                      <div className="performer-score">{(Number(s.voice) || 0) * mult}h</div>
-                      <div className="performer-period">{timeframe === 'MONTHLY' ? 'Monthly' : 'Weekly'}</div>
+                      <div className="performer-score">{Number(s.voice) || 0}h</div>
+                      <div className="performer-period">Weekly</div>
                     </div>
                   </div>
                 )}) : <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>No records</div>}
@@ -389,7 +381,6 @@ function App() {
               </div>
               <div className="performer-list-scroll">
                 {sortedByEvents.length > 0 ? sortedByEvents.map((s, idx) => {
-                  const mult = timeframe === 'MONTHLY' ? 4 : 1;
                   return (
                   <div key={s.id} className="performer-row">
                     <div className="performer-left">
@@ -400,7 +391,7 @@ function App() {
                       </div>
                     </div>
                     <div className="performer-right">
-                      <div className="performer-score">{(Number(s.events) || 0) * mult}</div>
+                      <div className="performer-score">{Number(s.events) || 0}</div>
                       <div className="performer-period">Events</div>
                     </div>
                   </div>
@@ -414,7 +405,6 @@ function App() {
               </div>
               <div className="performer-list-scroll">
                 {sortedByMessages.length > 0 ? sortedByMessages.map((s, idx) => {
-                  const mult = timeframe === 'MONTHLY' ? 4 : 1;
                   return (
                   <div key={s.id} className="performer-row">
                     <div className="performer-left">
@@ -425,7 +415,7 @@ function App() {
                       </div>
                     </div>
                     <div className="performer-right">
-                      <div className="performer-score">{(Number(s.messages) || 0) * mult}</div>
+                      <div className="performer-score">{Number(s.messages) || 0}</div>
                       <div className="performer-period">Total</div>
                     </div>
                   </div>
@@ -439,7 +429,6 @@ function App() {
               </div>
               <div className="performer-list-scroll">
                 {sortedByMini.length > 0 ? sortedByMini.map((s, idx) => {
-                  const mult = timeframe === 'MONTHLY' ? 4 : 1;
                   return (
                   <div key={s.id} className="performer-row">
                     <div className="performer-left">
@@ -450,7 +439,7 @@ function App() {
                       </div>
                     </div>
                     <div className="performer-right">
-                      <div className="performer-score">{(Number(s.mini) || 0) * mult}h</div>
+                      <div className="performer-score">{Number(s.mini) || 0}h</div>
                       <div className="performer-period">Total</div>
                     </div>
                   </div>

@@ -27,8 +27,6 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [divisionFilter, setDivisionFilter] = useState('All Divisions');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
-  const [timeframe, setTimeframe] = useState('WEEKLY');
-
   const filteredStaff = staff.filter(s => {
     const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           s.rank.toLowerCase().includes(searchQuery.toLowerCase());
@@ -46,10 +44,6 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
         <div>
           <h1 className="page-title">Staff Roster</h1>
           <p className="page-subtitle" style={{ fontFamily: 'var(--font-mono)' }}>Click any row to open and edit a staff member</p>
-        </div>
-        <div className="roster-toggles">
-          <button className={`toggle-btn ${timeframe === 'WEEKLY' ? 'active' : ''}`} onClick={() => setTimeframe('WEEKLY')}>WEEKLY</button>
-          <button className={`toggle-btn ${timeframe === 'MONTHLY' ? 'active' : ''}`} onClick={() => setTimeframe('MONTHLY')}>MONTHLY</button>
         </div>
       </div>
 
@@ -132,7 +126,6 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
                     </thead>
                     <tbody>
                       {divStaff.map((staffItem) => {
-                        const mult = timeframe === 'MONTHLY' ? 4 : 1;
                         return (
                           <tr key={staffItem.id} className="roster-row" style={{ cursor: isAdmin ? 'pointer' : 'default' }} onClick={() => isAdmin && onRowClick(staffItem.id)}>
                             <td>
@@ -145,10 +138,10 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
                             <td>
                               <span className={`badge badge-${staffItem.status.toLowerCase()}`}>{staffItem.status}</span>
                             </td>
-                            <td className="mono-value">{(Number(staffItem.voice) || 0) * mult}h</td>
-                            <td className="mono-value">{(Number(staffItem.messages) || 0) * mult}</td>
-                            <td className="mono-value">{(Number(staffItem.events) || 0) * mult}</td>
-                            <td className="mono-value">{(Number(staffItem.mini) || 0) * mult}</td>
+                            <td className="mono-value">{Number(staffItem.voice) || 0}h</td>
+                            <td className="mono-value">{Number(staffItem.messages) || 0}</td>
+                            <td className="mono-value">{Number(staffItem.events) || 0}</td>
+                            <td className="mono-value">{Number(staffItem.mini) || 0}</td>
                             <td>
                             <div className="warnings-block">
                               <WarningDots label="WARNINGS" count={staffItem.warnings.written} colorClass="warn-yellow" />

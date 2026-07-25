@@ -13,6 +13,8 @@ const ActivityIcon = () => (
 export default function StaffProfile({ staffMember, updateStaff, removeStaff, goBack, isAdmin }) {
   const [isEditingMetadata, setIsEditingMetadata] = useState(false);
   const [isEditingStats, setIsEditingStats] = useState(false);
+  const [isEditingWarn, setIsEditingWarn] = useState(false);
+  const [warnForm, setWarnForm] = useState({ written: 0, activity: 0 });
   const [editForm, setEditForm] = useState(staffMember || {});
   const [statsForm, setStatsForm] = useState(staffMember ? {
     voice: staffMember.voice,
@@ -20,7 +22,6 @@ export default function StaffProfile({ staffMember, updateStaff, removeStaff, go
     events: staffMember.events,
     mini: staffMember.mini
   } : {});
-  const [timeframe, setTimeframe] = useState('WEEKLY');
   const [confirmAction, setConfirmAction] = useState(null);
 
   if (!staffMember) return null;
@@ -119,10 +120,6 @@ export default function StaffProfile({ staffMember, updateStaff, removeStaff, go
             <div className="stats-card-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)', fontWeight: 600 }}>
                 <ActivityIcon stroke="var(--primary)" /> Activity Stats
-              </div>
-              <div className="roster-toggles">
-                <button className={`toggle-btn ${timeframe === 'WEEKLY' ? 'active' : ''}`} onClick={() => setTimeframe('WEEKLY')}>WEEKLY</button>
-                <button className={`toggle-btn ${timeframe === 'MONTHLY' ? 'active' : ''}`} onClick={() => setTimeframe('MONTHLY')}>MONTHLY</button>
               </div>
             </div>
             
