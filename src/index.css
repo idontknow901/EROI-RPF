@@ -1304,9 +1304,11 @@ select[multiple].form-select option, select[multiple].roster-select option {
   .main-wrapper {
     min-width: 0;
     min-height: 0;
+    width: 100vw;
+    overflow-x: hidden;
   }
 
   .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .dashboard-scroll { padding: 16px; }
+  .dashboard-scroll { padding: 16px; min-width: 0; width: 100%; overflow-x: hidden; }
   .form-grid { grid-template-columns: 1fr; }
 }

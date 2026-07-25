@@ -104,7 +104,7 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
         </div>
       )}
 
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '32px', minWidth: 0, maxWidth: '100%', width: '100%' }}>
         {["Department Head", "Appeal Division", "Ingame & Discord Moderation Division", "Training Division"].map(div => {
           const divStaff = filteredStaff.filter(s => {
             const d = Array.isArray(s.division) ? s.division[0] : s.division;
@@ -113,7 +113,7 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
           if (divStaff.length === 0) return null;
 
           return (
-            <div key={div} className="table-container division-section">
+            <div key={div} className="table-container division-section" style={{ maxWidth: '100%', width: '100%' }}>
               <div style={{ overflowX: 'auto', width: '100%' }}>
                 <table className="roster-table" style={{ width: '100%', minWidth: '800px' }}>
                 <thead>
