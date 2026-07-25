@@ -104,61 +104,73 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
         </div>
       )}
 
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '32px', minWidth: 0, maxWidth: '100%', width: '100%' }}>
-        {filteredStaff.length > 0 ? (
-          <div className="table-container division-section" style={{ maxWidth: '100%', width: '100%' }}>
-            <div style={{ overflowX: 'auto', width: '100%' }}>
-              <table className="roster-table" style={{ width: '100%', minWidth: '800px' }}>
-                <thead>
-                  <tr>
-                    <th style={{ width: '18%' }}>NAME</th>
-                    <th style={{ width: '15%' }}>DIVISION</th>
-                    <th style={{ width: '9%' }}>STATUS</th>
-                    <th style={{ width: '8%' }}>VOICE HRS</th>
-                    <th style={{ width: '8%' }}>MESSAGES</th>
-                    <th style={{ width: '8%' }}>EVENTS</th>
-                    <th style={{ width: '10%' }}>INGAME MOD HOURS</th>
-                    <th style={{ width: '14%' }}>WARNINGS</th>
-                    <th style={{ width: '10%' }}>EDIT</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredStaff.map((staffItem) => {
-                    const mult = timeframe === 'MONTHLY' ? 4 : 1;
-                    return (
-                      <tr key={staffItem.id} className="roster-row" style={{ cursor: isAdmin ? 'pointer' : 'default' }} onClick={() => isAdmin && onRowClick(staffItem.id)}>
-                        <td>
-                          <div className="staff-name">{staffItem.name}</div>
-                          <div className="staff-rank">{staffItem.rank}</div>
-                        </td>
-                        <td>
-                          <span className="badge badge-division">{Array.isArray(staffItem.division) ? staffItem.division.join(', ') : staffItem.division}</span>
-                        </td>
-                        <td>
-                          <span className={`badge badge-${staffItem.status.toLowerCase()}`}>{staffItem.status}</span>
-                        </td>
-                        <td className="mono-value">{(Number(staffItem.voice) || 0) * mult}h</td>
-                        <td className="mono-value">{(Number(staffItem.messages) || 0) * mult}</td>
-                        <td className="mono-value">{(Number(staffItem.events) || 0) * mult}</td>
-                        <td className="mono-value">{(Number(staffItem.mini) || 0) * mult}</td>
-                        <td>
-                        <div className="warnings-block">
-                          <WarningDots label="WARNINGS" count={staffItem.warnings.written} colorClass="warn-yellow" />
-                          <WarningDots label="STRIKES" count={staffItem.warnings.activity} colorClass="warn-orange" />
-                        </div>
-                      </td>
-                      <td>
-                        <button className="row-edit-btn">
-                          <EditIcon /> Edit
-                        </button>
-                      </td>
-                    </tr>
-                  )})}
-                </tbody>
-              </table>
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '48px', minWidth: 0, maxWidth: '100%', width: '100%' }}>
+        {["Department Head", "Appeal Division", "Ingame & Discord Moderation Division", "Training Division"].map(div => {
+          const divStaff = filteredStaff.filter(s => {
+            const d = Array.isArray(s.division) ? s.division[0] : s.division;
+            return d === div;
+          });
+          if (divStaff.length === 0) return null;
+
+          return (
+            <div key={div} className="division-section" style={{ maxWidth: '100%', width: '100%' }}>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', marginBottom: '16px', color: 'var(--text-main)' }}>{div}</h2>
+              <div className="table-container">
+                <div style={{ overflowX: 'auto', width: '100%' }}>
+                  <table className="roster-table" style={{ width: '100%', minWidth: '800px' }}>
+                    <thead>
+                      <tr>
+                        <th style={{ width: '18%' }}>NAME</th>
+                        <th style={{ width: '15%' }}>DIVISION</th>
+                        <th style={{ width: '9%' }}>STATUS</th>
+                        <th style={{ width: '8%' }}>VOICE HRS</th>
+                        <th style={{ width: '8%' }}>MESSAGES</th>
+                        <th style={{ width: '8%' }}>EVENTS</th>
+                        <th style={{ width: '10%' }}>INGAME MOD HOURS</th>
+                        <th style={{ width: '14%' }}>WARNINGS</th>
+                        <th style={{ width: '10%' }}>EDIT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {divStaff.map((staffItem) => {
+                        const mult = timeframe === 'MONTHLY' ? 4 : 1;
+                        return (
+                          <tr key={staffItem.id} className="roster-row" style={{ cursor: isAdmin ? 'pointer' : 'default' }} onClick={() => isAdmin && onRowClick(staffItem.id)}>
+                            <td>
+                              <div className="staff-name">{staffItem.name}</div>
+                              <div className="staff-rank">{staffItem.rank}</div>
+                            </td>
+                            <td>
+                              <span className="badge badge-division">{Array.isArray(staffItem.division) ? staffItem.division.join(', ') : staffItem.division}</span>
+                            </td>
+                            <td>
+                              <span className={`badge badge-${staffItem.status.toLowerCase()}`}>{staffItem.status}</span>
+                            </td>
+                            <td className="mono-value">{(Number(staffItem.voice) || 0) * mult}h</td>
+                            <td className="mono-value">{(Number(staffItem.messages) || 0) * mult}</td>
+                            <td className="mono-value">{(Number(staffItem.events) || 0) * mult}</td>
+                            <td className="mono-value">{(Number(staffItem.mini) || 0) * mult}</td>
+                            <td>
+                            <div className="warnings-block">
+                              <WarningDots label="WARNINGS" count={staffItem.warnings.written} colorClass="warn-yellow" />
+                              <WarningDots label="STRIKES" count={staffItem.warnings.activity} colorClass="warn-orange" />
+                            </div>
+                          </td>
+                          <td>
+                            <button className="row-edit-btn">
+                              <EditIcon /> Edit
+                            </button>
+                          </td>
+                        </tr>
+                      )})}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-          </div>
-        ) : (
+          );
+        })}
+        {filteredStaff.length === 0 && (
           <div style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)' }}>
             No staff members found matching the current filters.
           </div>
