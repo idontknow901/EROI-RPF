@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
   /* Dark Theme (Default) */
@@ -1320,4 +1320,31 @@ select[multiple].form-select option, select[multiple].roster-select option {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .dashboard-scroll, .dashboard-fixed { padding: 16px; min-width: 0; width: 100%; overflow-x: hidden; }
   .form-grid { grid-template-columns: 1fr; }
+
+  .roster-header-area {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .filters-bar {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .filter-group {
+    flex-shrink: 0;
+  }
+  
+  .roster-toggles {
+    width: 100%;
+    display: flex;
+  }
+  
+  .toggle-btn {
+    flex: 1;
+    text-align: center;
+  }
 }

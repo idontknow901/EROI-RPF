@@ -114,7 +114,6 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
 
           return (
             <div key={div} className="division-section" style={{ maxWidth: '100%', width: '100%' }}>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', marginBottom: '16px', color: 'var(--text-main)' }}>{div}</h2>
               <div className="table-container">
                 <div style={{ overflowX: 'auto', width: '100%' }}>
                   <table className="roster-table" style={{ width: '100%', minWidth: '800px' }}>
