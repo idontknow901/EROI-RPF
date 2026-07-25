@@ -56,12 +56,12 @@ const Settings = ({ isAdmin, setIsAdmin, wipeData }) => {
             <p style={{ color: 'var(--text-muted)', fontSize: '13px', lineHeight: '1.5' }}>
               Enter the administrator password to unlock Admin Mode. Players with staff access can't add or edit anything.
             </p>
-            
+
             <div className="form-group">
               <label className="filter-label" style={{ marginBottom: '8px', display: 'block' }}>ADMIN PASSWORD</label>
-              <input 
-                type="password" 
-                className="form-input" 
+              <input
+                type="password"
+                className="form-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -72,7 +72,7 @@ const Settings = ({ isAdmin, setIsAdmin, wipeData }) => {
                 {error}
               </div>
             )}
-            
+
             <button type="submit" className="primary-btn">
               LOG IN
             </button>

@@ -257,6 +257,7 @@ export default function StaffProfile({ staffMember, updateStaff, removeStaff, go
                 >
                   <option value="ACTIVE">Active</option>
                   <option value="LOA">LOA</option>
+                  <option value="ROA">ROA</option>
                   <option value="SUSPENDED">Suspended</option>
                   <option value="TERMINATED">Terminated</option>
                 </select>

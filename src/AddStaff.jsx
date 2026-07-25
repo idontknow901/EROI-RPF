@@ -9,6 +9,7 @@ const AddStaff = ({ isAdmin, addStaff }) => {
     name: '',
     rank: '',
     division: 'Department Head',
+    status: 'ACTIVE',
     access: 'Staff',
     notes: ''
   });
@@ -43,7 +44,7 @@ const AddStaff = ({ isAdmin, addStaff }) => {
       name: formData.name,
       rank: formData.rank,
       division: formData.division,
-      status: 'ACTIVE',
+      status: formData.status,
       access: formData.access,
       notes: formData.notes,
       voice: '0',
@@ -84,6 +85,17 @@ const AddStaff = ({ isAdmin, addStaff }) => {
               <option value="Appeal Division">Appeal Division</option>
               <option value="Ingame & Discord Moderation Division">Ingame & Discord Moderation Division</option>
               <option value="Training Division">Training Division</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Status</label>
+            <select className="form-select" value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})}>
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="LOA">LOA</option>
+              <option value="ROA">ROA</option>
+              <option value="SUSPENDED">SUSPENDED</option>
+              <option value="TERMINATED">TERMINATED</option>
             </select>
           </div>
 

@@ -48,6 +48,8 @@ function App() {
     return localStorage.getItem('rpf_admin') === 'true';
   });
   const [activeStaffId, setActiveStaffId] = useState(null);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const [staff, setStaff] = useState([]);
 
@@ -67,8 +69,10 @@ function App() {
         ...doc.data()
       }));
       setStaff(staffData);
+      setLoading(false);
     }, (error) => {
       console.error("Error fetching staff data: ", error);
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -156,6 +160,7 @@ function App() {
   const totalStaff = staff.length;
   const activeCount = staff.filter(s => s.status.toUpperCase() === 'ACTIVE').length;
   const loaCount = staff.filter(s => s.status.toUpperCase() === 'LOA').length;
+  const roaCount = staff.filter(s => s.status.toUpperCase() === 'ROA').length;
   const suspendedCount = staff.filter(s => s.status.toUpperCase() === 'SUSPENDED').length;
   const terminatedCount = staff.filter(s => s.status.toUpperCase() === 'TERMINATED').length;
 
@@ -189,9 +194,9 @@ function App() {
   return (
     <div className="app-layout">
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarExpanded ? 'expanded' : 'collapsed'}`}>
         <div className="sidebar-header">
-          <div className="logo-box">
+          <div className="logo-box" onClick={() => setSidebarExpanded(!sidebarExpanded)} style={{ cursor: 'pointer' }} title="Toggle Sidebar">
             <img src={rpfLogo} alt="RPF Logo" className="logo-image" />
           </div>
           <div className="brand-info">
@@ -202,16 +207,16 @@ function App() {
 
         <nav className="nav-links">
           <a href="#" className={`nav-link ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActiveTab('dashboard'); }}>
-            <DashboardIcon /> Dashboard
+            <DashboardIcon /> <span className="nav-link-text">Dashboard</span>
           </a>
           <a href="#" className={`nav-link ${activeTab === 'staff-list' || activeTab === 'staff-profile' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActiveTab('staff-list'); }}>
-            <StaffIcon /> Staff List
+            <StaffIcon /> <span className="nav-link-text">Staff List</span>
           </a>
           <a href="#" className={`nav-link ${activeTab === 'add-staff' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActiveTab('add-staff'); }}>
-            <AddStaffIcon /> Add Staff
+            <AddStaffIcon /> <span className="nav-link-text">Add Staff</span>
           </a>
           <a href="#" className={`nav-link ${activeTab === 'settings' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setActiveTab('settings'); }}>
-            <SettingsIcon /> Settings
+            <SettingsIcon /> <span className="nav-link-text">Settings</span>
           </a>
         </nav>
 
@@ -222,13 +227,13 @@ function App() {
                 <ShieldCheckIcon /> ADMIN MODE ON
               </span>
               <button className="exit-btn" onClick={() => setIsAdmin(false)}>
-                <ExitIcon /> Exit
+                <ExitIcon /> <span className="exit-text">Exit</span>
               </button>
             </div>
           )}
           <button className="theme-btn" onClick={toggleTheme}>
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            <span className="theme-btn-text">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
         </div>
       </aside>
@@ -236,13 +241,18 @@ function App() {
       {/* Main Content */}
       <main className="main-wrapper">
         {activeTab === 'dashboard' ? (
-        <div className="dashboard-scroll">
-          <div className="page-header">
-            <h1 className="page-title">Railway Police Force</h1>
-            <p className="page-subtitle">Staff overview & operations summary</p>
-          </div>
+          loading ? (
+            <div className="dashboard-scroll" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ color: 'var(--text-muted)', fontSize: '16px' }}>Loading dashboard data...</div>
+            </div>
+          ) : (
+          <div className="dashboard-scroll">
+            <div className="page-header">
+              <h1 className="page-title">Railway Police Force</h1>
+              <p className="page-subtitle">Staff overview & operations summary</p>
+            </div>
 
-          <div className="kpi-grid">
+            <div className="kpi-grid">
             <div className="kpi-card border-primary">
               <div className="kpi-card-header">
                 <span className="kpi-title">Total Staff</span>
@@ -263,6 +273,13 @@ function App() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><rect x="10" y="8" width="4" height="8"></rect></svg>
               </div>
               <div className="kpi-value">{loaCount}</div>
+            </div>
+            <div className="kpi-card border-purple">
+              <div className="kpi-card-header">
+                <span className="kpi-title">ROA</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple, #8b5cf6)" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div className="kpi-value">{roaCount}</div>
             </div>
             <div className="kpi-card border-alert">
               <div className="kpi-card-header">
@@ -358,6 +375,7 @@ function App() {
             </div>
           </div>
         </div>
+          )
         ) : activeTab === 'staff-list' ? (
           <StaffList isAdmin={isAdmin} staff={staff} onRowClick={handleRowClick} />
         ) : activeTab === 'staff-profile' ? (
