@@ -114,7 +114,8 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
 
           return (
             <div key={div} className="table-container division-section">
-              <table className="roster-table" style={{ tableLayout: 'fixed', width: '100%' }}>
+              <div style={{ overflowX: 'auto', width: '100%' }}>
+                <table className="roster-table" style={{ width: '100%', minWidth: '800px' }}>
                 <thead>
                   <tr>
                     <th style={{ width: '18%' }}>NAME</th>
@@ -162,6 +163,7 @@ const StaffList = ({ isAdmin, staff, onRowClick }) => {
                   )})}
                 </tbody>
               </table>
+              </div>
             </div>
           );
         })}

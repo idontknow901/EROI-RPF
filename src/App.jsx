@@ -48,7 +48,9 @@ function App() {
     return localStorage.getItem('rpf_admin') === 'true';
   });
   const [activeStaffId, setActiveStaffId] = useState(null);
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [sidebarExpanded, setSidebarExpanded] = useState(() => {
+    return localStorage.getItem('rpf_sidebar') === 'true';
+  });
   const [loading, setLoading] = useState(true);
 
   const [staff, setStaff] = useState([]);
@@ -61,6 +63,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('rpf_admin', isAdmin);
   }, [isAdmin]);
+
+  useEffect(() => {
+    localStorage.setItem('rpf_sidebar', sidebarExpanded);
+  }, [sidebarExpanded]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'staff'), (snapshot) => {
